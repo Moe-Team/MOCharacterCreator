@@ -1,0 +1,10 @@
+#:import option_bar option_bar
+
+<OptionBar>:
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: 40
+
+    Button:
+        text: "Load a character"
+        on_release: root.open_character_loader()
