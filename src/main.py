@@ -6,6 +6,7 @@ from root_layout import RootLayout
 
 Builder.load_file('character_loader.kv')
 Builder.load_file('option_bar.kv')
+Builder.load_file('character_display.kv')
 
 
 class CharacterCreatorApp(App):

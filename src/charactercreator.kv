@@ -2,6 +2,15 @@
 
     AnchorLayout:
         anchor_x: 'center'
+        anchor_y: 'top'
+
+        CharacterDisplay:
+            size_hint_y: None
+            height: root.height - _option_bar.height
+
+    AnchorLayout:
+        anchor_x: 'center'
         anchor_y: 'bottom'
 
         OptionBar:
+            id: _option_bar
