@@ -1,8 +1,8 @@
 from character import Character
-from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.relativelayout import RelativeLayout
 
 
-class CharacterLoader(FloatLayout):
+class CharacterLoader(RelativeLayout):
 
     def __init__(self, cancel, **kwargs):
         super(CharacterLoader, self).__init__(**kwargs)

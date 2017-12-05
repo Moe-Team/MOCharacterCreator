@@ -1,9 +1,9 @@
-from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.anchorlayout import AnchorLayout
 from character_loader import CharacterLoader
 from kivy.uix.popup import Popup
 
 
-class RootLayout(FloatLayout):
+class RootLayout(AnchorLayout):
 
     def __init__(self, **kwargs):
         super(RootLayout, self).__init__(**kwargs)

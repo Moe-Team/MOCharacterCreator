@@ -1,0 +1,22 @@
+<CharacterLoader>:
+
+    BoxLayout:
+        size: root.size
+        pos_hint: {'x': 0, 'y': 0}
+        orientation: 'vertical'
+
+        FileChooserIconView:
+            id: filechooser
+            dirselect: True
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Load"
+                on_release: root.load_character(filechooser.selection)
