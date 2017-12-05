@@ -5,6 +5,7 @@
         anchor_y: 'top'
 
         CharacterDisplay:
+            id: _character_display
             size_hint_y: None
             height: root.height - _option_bar.height
 
@@ -13,4 +14,5 @@
         anchor_y: 'bottom'
 
         OptionBar:
+            character_display: _character_display
             id: _option_bar
