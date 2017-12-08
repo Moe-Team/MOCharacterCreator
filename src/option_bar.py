@@ -10,15 +10,17 @@ class OptionBar(BoxLayout):
 
     def __init__(self, **kwargs):
         super(OptionBar, self).__init__(**kwargs)
-        self._popup = None
+        self.popup = None
 
     def open_character_loader(self):
-        content = CharacterLoader(self.cancel, self.character_display)
-        self._popup = Popup(title="Load a character", content=content, size_hint=(0.89, 0.89))
-        self._popup.open()
+        content = CharacterLoader(self.cancel, self.character_display, self)
+        config = App.get_running_app().config
+        path = config.get('path', 'root_path')
+        self.popup = Popup(title=path, content=content, size_hint=(0.89, 0.89))
+        self.popup.open()
 
     def cancel(self, path):
         config = App.get_running_app().config
         config.set('path', 'root_path', path)
         config.write()
-        self._popup.dismiss()
+        self.popup.dismiss()
