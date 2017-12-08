@@ -1,4 +1,5 @@
 <CharacterLoader>:
+    filechooser: filechooser
 
     BoxLayout:
         size: root.size
@@ -15,7 +16,7 @@
 
             Button:
                 text: "Cancel"
-                on_release: root.cancel()
+                on_release: root.cancel(filechooser.path)
 
             Button:
                 text: "Load"

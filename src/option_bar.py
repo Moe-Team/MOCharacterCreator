@@ -2,6 +2,7 @@ from kivy.uix.boxlayout import BoxLayout
 from character_loader import CharacterLoader
 from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
+from kivy.app import App
 
 
 class OptionBar(BoxLayout):
@@ -16,5 +17,8 @@ class OptionBar(BoxLayout):
         self._popup = Popup(title="Load a character", content=content, size_hint=(0.89, 0.89))
         self._popup.open()
 
-    def cancel(self):
+    def cancel(self, path):
+        config = App.get_running_app().config
+        config.set('path', 'root_path', path)
+        config.write()
         self._popup.dismiss()
