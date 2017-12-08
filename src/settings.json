@@ -1,0 +1,9 @@
+[{"type": "title",
+  "title": "Main"},
+  {"type": "string",
+  "title": "Root path",
+  "desc": "Set your resolution",
+  "section": "path",
+  "key": "root_path"
+  }
+]
