@@ -41,6 +41,7 @@ class Character:
     def __init__(self, directory):
         self.dir_parser = None
         self.sprites = None
+        self.icon_keys = []
         self.icons = None
         self.name = self.extract_name(directory)
         self.config_parser = ConfigParser(self.name)
@@ -57,6 +58,7 @@ class Character:
         if icon_atlas_path is None:
             raise CharacterLoadingError("icons.atlas")
         self.icons = Atlas(icon_atlas_path)
+        self.icon_keys = sorted(list(self.icons.textures.keys()))
 
     def load_sprites(self):
         sprite_atlas_path = self.dir_parser.find_sprite_atlas()
@@ -74,3 +76,6 @@ class Character:
         dirs = directory.split(os.sep)
         name = dirs[-1]
         return name
+
+    def get_sprite(self, key):
+        return self.sprites[key]

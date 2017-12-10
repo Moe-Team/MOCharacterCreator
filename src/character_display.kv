@@ -1,4 +1,26 @@
 #:import character_display character_display
 
-<CharacterDisplay>:
+<SpriteButton>:
+    size_hint: None, None
+    size: 250, 250
 
+
+<CharacterDisplay>:
+    sprite_layout: _sprite_layout
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        StackLayout:
+            id: _sprite_layout
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 30
+
+            Button:
+                text: '<'
+
+            Button:
+                text: '>'

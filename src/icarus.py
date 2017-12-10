@@ -69,6 +69,6 @@ class Icarus(EventDispatcher):
         # it in our dict.
         for meta_id, meta_coords in ids_found.items():
             x, y, w, h = meta_coords
-            textures[meta_id] = atlas_texture(meta_id, atlas_texture.get_region(*meta_coords))
+            textures[meta_id] = atlas_texture.get_region(*meta_coords)
 
         self.textures = textures
