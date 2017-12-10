@@ -79,3 +79,6 @@ class Character:
 
     def get_sprite(self, key):
         return self.sprites[key]
+
+    def get_sprite_number(self):
+        return len(self.icon_keys)
