@@ -10,8 +10,36 @@ SPRITE_BUTTON_HEIGHT = 250
 
 class SpriteButton(Image):
 
-    def __init__(self, **kwargs):
+    def __init__(self, name, character_display, is_selected=False, **kwargs):
+        self.name = name
+        self.character_display = character_display
+        self.is_selected = is_selected
+        if self.is_selected:
+            self.select()
         super(SpriteButton, self).__init__(**kwargs)
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos) and touch.button == 'left':
+            self.clicked()
+            return True
+        return super(SpriteButton, self).on_touch_down(touch)
+
+    def clicked(self):
+        self.character_display.select_or_deselect(self.name)
+        self.is_selected = not self.is_selected
+        self.on_is_selected()
+
+    def on_is_selected(self):
+        if self.is_selected:
+            self.select()
+        else:
+            self.deselect()
+
+    def select(self):
+        self.color = [0.5, 0.5, 0.5, 1]
+
+    def deselect(self):
+        self.color = [1, 1, 1, 1]
 
 
 class CharacterDisplay(RelativeLayout):
@@ -19,9 +47,10 @@ class CharacterDisplay(RelativeLayout):
     sprite_layout = ObjectProperty(None)
 
     def __init__(self, **kwargs):
-        super(CharacterDisplay, self).__init__(**kwargs)
         self.max_pages = 0
         self.page = 0
+        self.selected = []
+        super(CharacterDisplay, self).__init__(**kwargs)
 
     def on_size(self, *args):
         if self.character is not None:
@@ -64,8 +93,11 @@ class CharacterDisplay(RelativeLayout):
         self.sprite_layout.clear_widgets()
 
     def add_sprite(self, index):
-        sprite_button = SpriteButton()
         key = self.character.icon_keys[index]
+        if key not in self.selected:
+            sprite_button = SpriteButton(key, self)
+        else:
+            sprite_button = SpriteButton(key, self, is_selected=True)
         sprite_button.texture = self.character.get_sprite(key)
         self.sprite_layout.add_widget(sprite_button)
 
@@ -76,3 +108,9 @@ class CharacterDisplay(RelativeLayout):
         cols = int(self.height / SPRITE_BUTTON_HEIGHT)
         sprite_number = rows * cols
         return sprite_number
+
+    def select_or_deselect(self, sprite_name):
+        if sprite_name not in self.selected:
+            self.selected.append(sprite_name)
+        else:
+            self.selected.remove(sprite_name)
