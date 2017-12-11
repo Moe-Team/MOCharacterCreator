@@ -1,5 +1,5 @@
 from kivy.uix.boxlayout import BoxLayout
-from character_loader import CharacterLoader
+from character_loader import AtlasedCharacterLoader, PNGCharacterLoader
 from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
 from kivy.app import App
@@ -12,8 +12,15 @@ class OptionBar(BoxLayout):
         super(OptionBar, self).__init__(**kwargs)
         self.popup = None
 
-    def open_character_loader(self):
-        content = CharacterLoader(self.cancel, self.character_display, self)
+    def open_atlased_character_loader(self):
+        content = AtlasedCharacterLoader(self.cancel, self.character_display, self)
+        config = App.get_running_app().config
+        path = config.get('path', 'root_path')
+        self.popup = Popup(title=path, content=content, size_hint=(0.89, 0.89))
+        self.popup.open()
+
+    def open_png_character_loader(self):
+        content = PNGCharacterLoader(self.cancel, self.character_display, self)
         config = App.get_running_app().config
         path = config.get('path', 'root_path')
         self.popup = Popup(title=path, content=content, size_hint=(0.89, 0.89))

@@ -94,7 +94,7 @@ class CharacterDisplay(RelativeLayout):
         self.sprite_layout.clear_widgets()
 
     def add_sprite(self, index):
-        key = self.character.icon_keys[index]
+        key = self.character.get_sprite_name_by_index(index)
         if key not in self.selected:
             sprite_button = SpriteButton(key, self)
         else:

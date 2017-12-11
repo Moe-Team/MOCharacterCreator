@@ -2,6 +2,7 @@ import os
 from kivy.config import ConfigParser
 from kivy.atlas import Atlas
 from icarus import Icarus
+from kivy.uix.image import Image
 
 
 class CharacterError(Exception):
@@ -14,7 +15,7 @@ class CharacterLoadingError(CharacterError):
         self.file = file
 
 
-class CharacterDirParser:
+class AtlasedCharacterDirParser:
 
     def __init__(self, directory):
         self.dir = directory
@@ -36,7 +37,28 @@ class CharacterDirParser:
         return None
 
 
+class PNGCharacterDirParser:
+
+    def __init__(self, directory):
+        self.dir = directory
+
+    def find_icons(self):
+        if 'icons' in os.listdir(self.dir):
+            return os.path.join(self.dir, 'icons')
+        return None
+
+    def find_sprites(self):
+        for file in os.listdir(self.dir):
+            if file.endswith('.png'):
+                return self.dir
+        return None
+
+
 class Character:
+    pass
+
+
+class AtlasedCharacter(Character):
 
     def __init__(self, directory):
         self.dir_parser = None
@@ -48,7 +70,7 @@ class Character:
         self.load(directory)
 
     def load(self, directory):
-        self.dir_parser = CharacterDirParser(directory)
+        self.dir_parser = AtlasedCharacterDirParser(directory)
         self.load_settings()
         self.load_sprites()
         self.load_icons()
@@ -82,3 +104,60 @@ class Character:
 
     def get_sprite_number(self):
         return len(self.icon_keys)
+
+    def get_sprite_name_by_index(self, index):
+        return self.icon_keys[index]
+
+
+class PNGSprite(Image):
+    pass
+
+
+class PNGCharacter(Character):
+
+    def __init__(self, directory):
+        self.dir_parser = None
+        self.icons = {}
+        self.icon_keys = []
+        self.sprites = {}
+        self.load(directory)
+
+    def load(self, directory):
+        self.dir_parser = PNGCharacterDirParser(directory)
+        self.load_icons()
+        self.load_sprites()
+        self.load_settings()
+
+    def load_icons(self):
+        icons_dir = self.dir_parser.find_icons()
+        for icon_path in os.listdir(icons_dir):
+            icon_name = self.extract_name(icon_path)
+            self.icon_keys.append(icon_name)
+            self.icons[icon_name] = None
+
+    def load_sprites(self):
+        sprites_dir = self.dir_parser.find_sprites()
+        for sprite_path in os.listdir(sprites_dir):
+            if sprite_path.endswith('.png'):
+                sprite_name = self.extract_name(sprite_path)
+                self.sprites[sprite_name] = None
+
+    def extract_name(self, directory):
+        dirs = directory.split(os.sep)
+        name = dirs[-1]
+        return name
+
+    def load_settings(self):
+        pass
+
+    def get_sprite(self, key):
+        if self.sprites[key] is None:
+            sprite_path = os.path.join(self.dir_parser.find_sprites(), key)
+            self.sprites[key] = PNGSprite(source=sprite_path)
+        return self.sprites[key].texture
+
+    def get_sprite_number(self):
+        return len(self.sprites)
+
+    def get_sprite_name_by_index(self, index):
+        return self.icon_keys[index]
