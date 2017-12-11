@@ -69,6 +69,7 @@ class CharacterDisplay(RelativeLayout):
 
     def on_character(self, inst, character):
         self.page = 0
+        self.selected.clear()
         self.display_character()
 
     def display_character(self):

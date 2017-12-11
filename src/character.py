@@ -44,7 +44,7 @@ class Character:
         self.icon_keys = []
         self.icons = None
         self.name = self.extract_name(directory)
-        self.config_parser = ConfigParser(self.name)
+        self.config_parser = ConfigParser()
         self.load(directory)
 
     def load(self, directory):
