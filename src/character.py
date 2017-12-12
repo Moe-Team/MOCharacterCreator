@@ -55,25 +55,37 @@ class PNGCharacterDirParser:
 
 
 class Character:
-    pass
+
+    def load(self, directory):
+        self.load_icons()
+        self.load_sprites()
+        self.load_settings()
+
+    def extract_name(self, directory):
+        dirs = directory.split(os.sep)
+        name = dirs[-1]
+        return name
+
+    def load_icons(self):
+        pass
+
+    def load_sprites(self):
+        pass
+
+    def load_settings(self):
+        pass
 
 
 class AtlasedCharacter(Character):
 
     def __init__(self, directory):
-        self.dir_parser = None
+        self.dir_parser = AtlasedCharacterDirParser(directory)
         self.sprites = None
         self.icon_keys = []
         self.icons = None
         self.name = self.extract_name(directory)
         self.config_parser = ConfigParser()
         self.load(directory)
-
-    def load(self, directory):
-        self.dir_parser = AtlasedCharacterDirParser(directory)
-        self.load_settings()
-        self.load_sprites()
-        self.load_icons()
 
     def load_icons(self):
         icon_atlas_path = self.dir_parser.find_icon_atlas()
@@ -94,11 +106,6 @@ class AtlasedCharacter(Character):
             raise CharacterLoadingError("settings.ini")
         self.config_parser.read(settings)
 
-    def extract_name(self, directory):
-        dirs = directory.split(os.sep)
-        name = dirs[-1]
-        return name
-
     def get_sprite(self, key):
         return self.sprites[key]
 
@@ -116,17 +123,12 @@ class PNGSprite(Image):
 class PNGCharacter(Character):
 
     def __init__(self, directory):
-        self.dir_parser = None
+        self.dir_parser = PNGCharacterDirParser(directory)
         self.icons = {}
         self.icon_keys = []
         self.sprites = {}
+        self.name = self.extract_name(directory)
         self.load(directory)
-
-    def load(self, directory):
-        self.dir_parser = PNGCharacterDirParser(directory)
-        self.load_icons()
-        self.load_sprites()
-        self.load_settings()
 
     def load_icons(self):
         icons_dir = self.dir_parser.find_icons()
@@ -141,11 +143,6 @@ class PNGCharacter(Character):
             if sprite_path.endswith('.png'):
                 sprite_name = self.extract_name(sprite_path)
                 self.sprites[sprite_name] = None
-
-    def extract_name(self, directory):
-        dirs = directory.split(os.sep)
-        name = dirs[-1]
-        return name
 
     def load_settings(self):
         pass
